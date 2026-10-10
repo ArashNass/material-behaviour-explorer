@@ -720,6 +720,8 @@
       .insights-toggle { display:inline-flex; }
       .insights { display:block; position:fixed; z-index:72; top:calc(var(--header-h) + var(--site-hd-h)); right:0; bottom:0; width:min(370px,92vw); min-height:0; border-left:1px solid var(--border); transform:translateX(103%); transition:transform 220ms ease; box-shadow:var(--shadow-md); }
       .insights.open { transform:translateX(0); }
+      .insights { visibility:hidden; transition:transform 220ms ease, visibility 0s linear 220ms; }
+      .insights.open { visibility:visible; transition:transform 220ms ease, visibility 0s; }
       .insights-inner { position:relative; top:0; max-height:100%; height:100%; }
       .insights-close { display:inline-flex; }
     }
@@ -727,6 +729,16 @@
       .workspace { padding:14px; }
       .chart-wrap { height:clamp(430px,62vh,600px); min-height:380px; }
       .self-test-badge { display:none; }
+    }
+    @media (max-width:900px) {
+      /* invisible tooltips still count as page width; only render them while tapped/focused, and never scroll sideways */
+      html { overflow-x:hidden; }
+      .onboarding-overlay { display:flex; overflow-y:auto; padding:14px; }
+      .onboarding-overlay[hidden] { display:none; }
+      .onboarding-card { margin:auto; }
+      .term-help::after, #loadingMode button:not(:disabled)::after { display:none; }
+      .term-help:hover::after, .term-help:focus-visible::after,
+      #loadingMode button:not(:disabled):hover::after, #loadingMode button:not(:disabled):focus-visible::after { display:block; max-width:min(230px, calc(100vw - 32px)); }
     }
     @media (max-width:560px) {
       .basic-parameters { grid-template-columns:1fr; }
