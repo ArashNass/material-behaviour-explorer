@@ -461,7 +461,7 @@
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 12%, transparent); }
 
     .chart-wrap { position: relative; height: clamp(430px, 58vh, 650px); min-height: 390px; background: var(--surface); }
-    #stressChart { width: 100%; height: 100%; display: block; touch-action: none; }
+    #stressChart { width: 100%; height: 100%; display: block; touch-action: auto; }
     .chart-legend {
       position: absolute;
       top: 14px;
@@ -759,7 +759,11 @@
 <meta name="twitter:title" content="Material Stress-Strain Explorer | Arash Nassirpour">
 <meta name="twitter:description" content="Explore stress-strain behaviour for concrete, reinforcing steel, structural steel, timber, masonry and FRP with free interactive engineering models."><meta name="twitter:image" content="https://arashnassirpour.com/material-behaviour-explorer/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Structural Material Behaviour Explorer","description":"Explore stress-strain behaviour for concrete, reinforcing steel, structural steel, timber, masonry and FRP with free interactive engineering models.","url":"https://arashnassirpour.com/material-behaviour-explorer/","applicationCategory":"EducationalApplication","operatingSystem":"Any","isAccessibleForFree":true,"author":{"@type":"Person","name":"Arash Nassirpour","url":"https://arashnassirpour.com/about/"}}</script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0WERZ6WKQY"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0WERZ6WKQY");</script></head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0WERZ6WKQY"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0WERZ6WKQY");</script><style>
+/* phones: 16px form fields stop iOS Safari zooming the page in when one is tapped */
+@media (max-width:760px){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]),select,textarea{font-size:16px!important}}
+</style>
+</head>
 <body>
 <header class="site-hd"><style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
