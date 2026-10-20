@@ -759,10 +759,14 @@
 <meta name="twitter:title" content="Material Stress-Strain Explorer | Arash Nassirpour">
 <meta name="twitter:description" content="Explore stress-strain behaviour for concrete, reinforcing steel, structural steel, timber, masonry and FRP with free interactive engineering models."><meta name="twitter:image" content="https://arashnassirpour.com/material-behaviour-explorer/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Structural Material Behaviour Explorer","description":"Explore stress-strain behaviour for concrete, reinforcing steel, structural steel, timber, masonry and FRP with free interactive engineering models.","url":"https://arashnassirpour.com/material-behaviour-explorer/","applicationCategory":"EducationalApplication","operatingSystem":"Any","isAccessibleForFree":true,"author":{"@type":"Person","name":"Arash Nassirpour","url":"https://arashnassirpour.com/about/"}}</script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0WERZ6WKQY"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0WERZ6WKQY");</script><style>
+<script defer src="/assets/analytics.js?v=2"></script><style>
 /* phones: 16px form fields stop iOS Safari zooming the page in when one is tapped */
 @media (max-width:760px){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]),select,textarea{font-size:16px!important}}
 </style>
+
+<script defer src="/assets/engagement.js?v=1"></script>
+<script type="module" src="/assets/vitals.js?v=1"></script>
+<link rel="stylesheet" href="/assets/tool-guide.css?v=1">
 </head>
 <body>
 <header class="site-hd"><style>
@@ -866,7 +870,7 @@
       <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle theme">
         <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
       </button>
-      <button class="btn btn-primary" id="saveImageBtn" title="Download current chart as PNG">
+      <button class="btn btn-primary" id="saveImageBtn" data-track-action="export_requested" title="Download current chart as PNG">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
         <span class="desktop-only">Save chart</span>
       </button>
@@ -883,7 +887,7 @@
       <p>Select a structural material, adjust a few essential properties, and the stress–strain response updates immediately. Trace the curve to see yielding, cracking, softening or rupture. Advanced parameters remain available when you need them, while transparent assumptions explain what the model does and does not represent.</p>
       <div class="onboarding-actions">
         <button class="btn" id="skipOnboardingBtn">Start with concrete</button>
-        <button class="btn btn-primary" id="tryExampleBtn">Try a cyclic steel example</button>
+        <button class="btn btn-primary" id="tryExampleBtn" data-track-action="load_example">Try a cyclic steel example</button>
       </div>
     </div>
   </div>
@@ -962,7 +966,7 @@
               <p class="section-description">Freeze the current curve, then change material or parameters.</p>
             </div>
           </div>
-          <button class="btn" id="addCompareBtn" style="width:100%; margin-bottom:10px">
+          <button class="btn" id="addCompareBtn" data-track-action="compare_materials" style="width:100%; margin-bottom:10px">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>
             Add current material
           </button>
@@ -988,7 +992,7 @@
 
         <div style="display:flex; gap:8px">
           <button class="btn" id="resetBtn" style="flex:1">Reset</button>
-          <button class="btn" id="downloadDataBtn" style="flex:1">CSV data</button>
+          <button class="btn" id="downloadDataBtn" data-track-action="export_requested" style="flex:1">CSV data</button>
         </div>
       </div>
     </aside>
@@ -1005,7 +1009,7 @@
               <button class="active" data-unit="SI" aria-pressed="true">SI</button>
               <button data-unit="US" aria-pressed="false">US</button>
             </div>
-            <button class="btn" id="downloadJsonBtn">
+            <button class="btn" id="downloadJsonBtn" data-track-action="export_requested">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4H7Z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>
               Model JSON
             </button>
@@ -1908,6 +1912,7 @@
       updateAllOutputs();
       els.chartWrap.classList.remove('pending');
       els.chartWrap.setAttribute('aria-busy','false');
+      if(state.valid) window.PlatformMetrics?.complete('calculate');
     }
 
     function markInputsValid(valid) {
@@ -2491,7 +2496,7 @@
     }
 
     function downloadBlob(content,type,filename){
-      const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+      const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();window.PlatformMetrics?.emit('export_ready',{format:type.includes('csv')?'csv':'json'});setTimeout(()=>URL.revokeObjectURL(url),1000);
     }
     function downloadCSV(){
       if(!state.valid)return;
@@ -2682,6 +2687,7 @@
   })();
   </script>
 </div>
+<section class="platform-guide" aria-labelledby="platform-guide-title"><h2 id="platform-guide-title">Using material behaviour</h2><p>Compare idealised stress–strain relationships for the materials supported by the explorer. Inspect model assumptions, loading paths and parameter limits before interpreting the curves.</p><details><summary>Try a worked example</summary><ol><li>Choose a built-in material preset and inspect its stress–strain curve.</li><li>Change one material parameter and compare the initial stiffness and post-yield response where applicable.</li><li>Add a comparison trace, then export the curve and model information.</li></ol></details><nav aria-label="Related tools"><a href="/rc-section-designer/">Reinforced concrete sections</a><a href="/modal-analysis/">Modal analysis</a></nav></section>
 <footer class="site-ft"><style>
 .site-ft{background:#0f2350;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;line-height:normal;font-family:Inter,'Segoe UI',system-ui,sans-serif}
 .site-ft .ft-in{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:14px 24px}
